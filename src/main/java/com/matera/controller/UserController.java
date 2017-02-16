@@ -30,26 +30,12 @@ public class UserController {
    }
 
    @RequestMapping(method = RequestMethod.POST)
-   public ResponseEntity<Void> createMachine(@Valid @RequestBody User user, BindingResult bindingResult) {
+   public ResponseEntity<Void> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
 
       validateUserInput(bindingResult);
 
       userService.save(user);
       return ResponseEntity.ok().build();
-   }
-
-   private void validateUserInput(BindingResult bindingResult) {
-      if (bindingResult != null && bindingResult.hasErrors()) {
-         StringBuffer bff = new StringBuffer();
-         // ObjectNode message = new ObjectNode(JsonNodeFactory.instance);
-         for (FieldError error : bindingResult.getFieldErrors()) {
-            bff.append("Field: ").append(error.getField());
-            bff.append("Message: ").append(error.getDefaultMessage());
-         }
-
-         throw new IllegalArgumentException(bff.toString());
-         // return ResponseEntity.badRequest().build();
-      }
    }
 
    @RequestMapping(value = "/{login}", method = RequestMethod.PUT)
@@ -66,5 +52,19 @@ public class UserController {
    @RequestMapping(method = RequestMethod.GET)
    public List<User> findAllUsers() {
       return userService.findAllUsers();
+   }
+
+   private void validateUserInput(BindingResult bindingResult) {
+      if (bindingResult != null && bindingResult.hasErrors()) {
+         StringBuffer bff = new StringBuffer();
+         // ObjectNode message = new ObjectNode(JsonNodeFactory.instance);
+         for (FieldError error : bindingResult.getFieldErrors()) {
+            bff.append("Field: ").append(error.getField());
+            bff.append("Message: ").append(error.getDefaultMessage());
+         }
+
+         throw new IllegalArgumentException(bff.toString());
+         // return ResponseEntity.badRequest().build();
+      }
    }
 }

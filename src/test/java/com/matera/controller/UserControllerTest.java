@@ -4,6 +4,7 @@ import static com.matera.helper.JsonMapper.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,22 +59,32 @@ public class UserControllerTest {
       this.mvc.perform(get("/v1/users/lmi")).andExpect(status().isOk()).andExpect(jsonPath("email", equalTo(email)));
    }
 
-   // @Test
-   // public void findByNameAndCountry() throws Exception {
-   //
-   // this.mvc.perform(
-   // get("/api/cities/search/findByNameAndCountryAllIgnoringCase?name=Melbourne&country=Australia"))
-   // .andExpect(status().isOk())
-   // .andExpect(jsonPath("state", equalTo("Victoria")))
-   // .andExpect(jsonPath("name", equalTo("Melbourne")));
-   // }
-   //
-   // @Test
-   // public void findByContaining() throws Exception {
-   //
-   // this.mvc.perform(
-   // get("/api/cities/search/findByNameContainingAndCountryContainingAllIgnoringCase?name=&country=UK"))
-   // .andExpect(status().isOk())
-   // .andExpect(jsonPath("_embedded.cities", hasSize(3)));
-   // }
+   @Test
+   public void testCreatingAndUpdatingUser() throws Exception {
+      String email = "lucas_montanari at hotmail dot com";
+      User user = new User();
+      user.setEmail(email);
+      user.setId(2l);
+      user.setLogin("lmi2");
+
+      this.mvc.perform(
+            post("/v1/users").contentType(MediaType.APPLICATION_JSON_UTF8)
+                  .content(asJsonString(user)))
+            .andExpect(status().isOk());
+
+      email = "other_email at hotmail dot com";
+      user = new User();
+      user.setEmail(email);
+      user.setId(2l);
+      user.setLogin("lmi3");
+
+      this.mvc.perform(put("/v1/users/lmi2").contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(asJsonString(user))).andExpect(status().isOk());
+
+      this.mvc.perform(get("/v1/users/lmi3").contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(asJsonString(user))).andExpect(status().isOk()).andExpect(jsonPath("email", equalTo(email)));
+
+      this.mvc.perform(get("/v1/users/lmi2").contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(status().is(404));
+   }
+
 }

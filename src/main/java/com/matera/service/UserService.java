@@ -27,11 +27,12 @@ public class UserService {
       User databaseUser = findUser(login);
       BeanUtils.copyProperties(user, databaseUser);
 
+      this.users.remove(login);
       save(databaseUser);
    }
 
    public void delete(User user) {
-      this.users.remove(user);
+      this.users.remove(user.getLogin());
    }
 
    public List<User> findAllUsers() {

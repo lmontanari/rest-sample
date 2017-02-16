@@ -22,7 +22,7 @@ public class SwaggerConfig {
             "User REST API", "API Documentation for user crud.",
             "0.0.1",
             "urn:tos",
-            new Contact("Lucas", "www.matera.com", "lucas.montanari@matera.com"),
+            new Contact("Lucas", "https://github.com/lmontanari/rest-sample", "lucas.montanari@matera.com"),
             "Apache 2.0",
             "http://www.apache.org/licenses/LICENSE-2.0");
 
