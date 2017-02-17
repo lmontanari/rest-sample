@@ -1,5 +1,9 @@
 package com.matera.exceptions;
 
+/**
+ * To be thrown when searching for a user that doesn't exists. 
+ * @author Lucas Montanari
+ */
 public class UserNotFoundException extends Exception {
 
    /**
